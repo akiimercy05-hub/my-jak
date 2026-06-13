@@ -5,49 +5,100 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Voting Poster Generator</title>
     <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
-            margin: 0;
-            padding: 20px;
-            background: #1a1a1a;
+            background: linear-gradient(135deg, #0f172a 0%, #1a1f35 100%);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            font-family: system-ui;
+            padding: 20px;
+            font-family: system-ui, -apple-system;
         }
-        canvas {
-            border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        
+        .container {
+            text-align: center;
+        }
+        
+        h1 {
+            color: #6366f1;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+        
+        #posterCanvas {
+            border: 3px solid #6366f1;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(99, 102, 241, 0.3);
+            background: white;
             max-width: 100%;
             height: auto;
+            margin-bottom: 20px;
         }
-        .download-btn {
-            margin-top: 20px;
-            padding: 12px 24px;
-            background: linear-gradient(135deg, #6366f1, #8b5cf6);
-            color: white;
+        
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            padding: 15px 30px;
+            font-size: 16px;
+            font-weight: bold;
             border: none;
             border-radius: 10px;
-            font-weight: bold;
             cursor: pointer;
-            font-size: 16px;
+            transition: all 0.3s ease;
         }
+        
+        .download-btn {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+        }
+        
         .download-btn:hover {
-            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        .refresh-btn {
+            background: linear-gradient(135deg, #ec4899, #f43f5e);
+            color: white;
+        }
+        
+        .refresh-btn:hover {
+            box-shadow: 0 10px 30px rgba(236, 72, 153, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        p {
+            color: #cbd5e1;
+            margin-top: 20px;
+            font-size: 14px;
         }
     </style>
 </head>
 <body>
-    <div style="text-align: center;">
+    <div class="container">
+        <h1>🗳️ Voting Poster Generator</h1>
         <canvas id="posterCanvas" width="800" height="1000"></canvas>
-        <br>
-        <button class="download-btn" onclick="downloadPoster()">📥 Download Poster</button>
+        <div class="button-group">
+            <button class="download-btn" onclick="downloadPoster()">📥 Download Poster as PNG</button>
+            <button class="refresh-btn" onclick="generatePoster()">🔄 Generate New Poster</button>
+        </div>
+        <p>Right-click on image → Save image as... (if buttons don't work)</p>
     </div>
 
     <script>
-        function drawPoster() {
+        function generatePoster() {
             const canvas = document.getElementById('posterCanvas');
             const ctx = canvas.getContext('2d');
+
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             // Background gradient
             const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
@@ -57,165 +108,233 @@
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // Add accent shapes
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+            // Decorative circles
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
             ctx.beginPath();
             ctx.arc(800, -100, 300, 0, Math.PI * 2);
             ctx.fill();
-
             ctx.beginPath();
             ctx.arc(0, 1000, 250, 0, Math.PI * 2);
             ctx.fill();
 
-            // Draw student head (circle)
-            ctx.fillStyle = '#FFD700';
+            // ===== DRAW SMILING STUDENT =====
+            
+            // Head (circle) - skin tone
+            ctx.fillStyle = '#F4A460';
             ctx.beginPath();
-            ctx.arc(400, 250, 80, 0, Math.PI * 2);
+            ctx.arc(400, 240, 85, 0, Math.PI * 2);
             ctx.fill();
 
-            // Draw student face
-            ctx.fillStyle = '#FDB833';
+            // Eyes - white
+            ctx.fillStyle = '#FFFFFF';
             ctx.beginPath();
-            ctx.arc(400, 280, 70, 0, Math.PI * 2);
+            ctx.arc(375, 215, 12, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(425, 215, 12, 0, Math.PI * 2);
             ctx.fill();
 
-            // Eyes
-            ctx.fillStyle = '#333';
+            // Pupils - black
+            ctx.fillStyle = '#000000';
             ctx.beginPath();
-            ctx.arc(380, 260, 8, 0, Math.PI * 2);
+            ctx.arc(378, 218, 7, 0, Math.PI * 2);
             ctx.fill();
             ctx.beginPath();
-            ctx.arc(420, 260, 8, 0, Math.PI * 2);
+            ctx.arc(428, 218, 7, 0, Math.PI * 2);
             ctx.fill();
 
-            // Smiling mouth (arc)
-            ctx.strokeStyle = '#333';
-            ctx.lineWidth = 3;
+            // Eye shine
+            ctx.fillStyle = '#FFFFFF';
             ctx.beginPath();
-            ctx.arc(400, 295, 15, 0, Math.PI);
+            ctx.arc(380, 216, 2, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(430, 216, 2, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Smile (arc)
+            ctx.strokeStyle = '#000000';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.arc(400, 260, 20, 0, Math.PI);
             ctx.stroke();
 
-            // Body
-            ctx.fillStyle = '#4CAF50';
-            ctx.fillRect(350, 360, 100, 80);
+            // Nose
+            ctx.fillStyle = '#E6A876';
+            ctx.beginPath();
+            ctx.ellipse(400, 240, 8, 12, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Hair
+            ctx.fillStyle = '#2C1810';
+            ctx.beginPath();
+            ctx.arc(400, 200, 90, Math.PI * 0.2, Math.PI * 0.8);
+            ctx.lineTo(490, 200);
+            ctx.lineTo(310, 200);
+            ctx.fill();
+
+            // Neck
+            ctx.fillStyle = '#F4A460';
+            ctx.fillRect(385, 315, 30, 20);
+
+            // School uniform - shirt (blue)
+            ctx.fillStyle = '#1E40AF';
+            ctx.beginPath();
+            ctx.ellipse(400, 370, 75, 70, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Collar
+            ctx.fillStyle = '#FFFFFF';
+            ctx.beginPath();
+            ctx.moveTo(370, 330);
+            ctx.lineTo(360, 350);
+            ctx.lineTo(380, 345);
+            ctx.closePath();
+            ctx.fill();
+            ctx.beginPath();
+            ctx.moveTo(430, 330);
+            ctx.lineTo(440, 350);
+            ctx.lineTo(420, 345);
+            ctx.closePath();
+            ctx.fill();
+
+            // Tie
+            ctx.fillStyle = '#DC2626';
+            ctx.fillRect(395, 340, 10, 40);
 
             // Arms
-            ctx.fillStyle = '#FDB833';
-            ctx.fillRect(320, 380, 30, 50);
-            ctx.fillRect(450, 380, 30, 50);
+            ctx.fillStyle = '#F4A460';
+            ctx.beginPath();
+            ctx.ellipse(330, 360, 25, 55, -0.3, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.ellipse(470, 360, 25, 55, 0.3, 0, Math.PI * 2);
+            ctx.fill();
 
             // Hands
-            ctx.fillStyle = '#FDB833';
+            ctx.fillStyle = '#F4A460';
             ctx.beginPath();
-            ctx.arc(320, 440, 15, 0, Math.PI * 2);
+            ctx.arc(310, 415, 18, 0, Math.PI * 2);
             ctx.fill();
             ctx.beginPath();
-            ctx.arc(480, 440, 15, 0, Math.PI * 2);
+            ctx.arc(490, 415, 18, 0, Math.PI * 2);
             ctx.fill();
 
-            // Legs
-            ctx.fillStyle = '#333';
-            ctx.fillRect(365, 440, 15, 60);
-            ctx.fillRect(420, 440, 15, 60);
+            // Peace sign fingers
+            ctx.strokeStyle = '#F4A460';
+            ctx.lineWidth = 8;
+            ctx.lineCap = 'round';
+            ctx.beginPath();
+            ctx.moveTo(315, 395);
+            ctx.lineTo(315, 425);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(325, 395);
+            ctx.lineTo(325, 425);
+            ctx.stroke();
+
+            // Pants
+            ctx.fillStyle = '#1F2937';
+            ctx.fillRect(360, 430, 30, 60);
+            ctx.fillRect(410, 430, 30, 60);
 
             // Shoes
-            ctx.fillStyle = '#222';
-            ctx.fillRect(360, 500, 25, 15);
-            ctx.fillRect(415, 500, 25, 15);
+            ctx.fillStyle = '#000000';
+            ctx.beginPath();
+            ctx.ellipse(375, 495, 20, 12, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.ellipse(425, 495, 20, 12, 0, 0, Math.PI * 2);
+            ctx.fill();
 
-            // Top title - VOTING SYSTEM
-            ctx.font = 'bold 56px system-ui';
+            // ===== TEXT SECTIONS =====
+
+            // Main title
+            ctx.font = 'bold 58px Arial';
             ctx.fillStyle = '#FFFFFF';
             ctx.textAlign = 'center';
-            ctx.textShadow = '0 4px 8px rgba(0,0,0,0.3)';
-            ctx.fillText('🗳️ E-VOTING', 400, 580);
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+            ctx.shadowBlur = 10;
+            ctx.shadowOffsetY = 3;
+            ctx.fillText('🗳️ E-VOTING', 400, 570);
 
             // Subtitle
-            ctx.font = 'bold 28px system-ui';
-            ctx.fillStyle = '#E0E0E0';
-            ctx.fillText('STUDENT ELECTION', 400, 620);
+            ctx.font = 'bold 32px Arial';
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillText('ELECTION DAY', 400, 615);
 
-            // Three pillars of voting
+            // Three pillars
             const pillars = [
-                { word: '🔐 SECURE', x: 150 },
-                { word: '🌍 TRANSPARENT', x: 400 },
-                { word: '✓ VALIDATIVE', x: 650 }
+                { icon: '🔐', label: 'SECURE', x: 150 },
+                { icon: '🌍', label: 'TRANSPARENT', x: 400 },
+                { icon: '✓', label: 'VALIDATIVE', x: 650 }
             ];
 
-            ctx.font = 'bold 22px system-ui';
             pillars.forEach(pillar => {
-                // Pillar background
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
-                ctx.beginPath();
-                ctx.roundRect(pillar.x - 85, 660, 170, 80, 10);
-                ctx.fill();
-
-                // Border
-                ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+                // Box background
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+                ctx.fillRect(pillar.x - 90, 660, 180, 90);
+                
+                // Box border
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
                 ctx.lineWidth = 2;
-                ctx.beginPath();
-                ctx.roundRect(pillar.x - 85, 660, 170, 80, 10);
-                ctx.stroke();
+                ctx.strokeRect(pillar.x - 90, 660, 180, 90);
 
-                // Text
+                // Icon
+                ctx.font = 'bold 40px Arial';
                 ctx.fillStyle = '#FFFFFF';
                 ctx.textAlign = 'center';
-                ctx.fillText(pillar.word, pillar.x, 710);
+                ctx.fillText(pillar.icon, pillar.x, 695);
+
+                // Label
+                ctx.font = 'bold 18px Arial';
+                ctx.fillStyle = '#FFD700';
+                ctx.fillText(pillar.label, pillar.x, 730);
             });
 
             // Tagline
-            ctx.font = 'italic 20px system-ui';
+            ctx.font = 'italic 22px Arial';
             ctx.fillStyle = '#FFFFFF';
             ctx.textAlign = 'center';
-            ctx.fillText('Democracy in Young Citizens', 400, 800);
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
+            ctx.shadowBlur = 5;
+            ctx.fillText('Democracy in Young Citizens', 400, 810);
 
-            // Vote for change message
-            ctx.font = 'bold 24px system-ui';
+            // Main call to action
+            ctx.font = 'bold 28px Arial';
             ctx.fillStyle = '#FFD700';
             ctx.textAlign = 'center';
-            ctx.fillText('MAKE YOUR VOTE COUNT', 400, 860);
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+            ctx.shadowBlur = 8;
+            ctx.fillText('MAKE YOUR VOTE COUNT', 400, 870);
 
-            // Bottom decorative line
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+            // Bottom line
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
             ctx.lineWidth = 3;
             ctx.beginPath();
-            ctx.moveTo(150, 900);
-            ctx.lineTo(650, 900);
+            ctx.moveTo(120, 900);
+            ctx.lineTo(680, 900);
             ctx.stroke();
 
-            // Footer text
-            ctx.font = '16px system-ui';
+            // Footer
+            ctx.font = 'bold 18px Arial';
             ctx.fillStyle = '#FFFFFF';
             ctx.textAlign = 'center';
-            ctx.fillText('Fair • Secure • Transparent • For All', 400, 950);
-        }
-
-        // Polyfill for roundRect if needed
-        if (!CanvasRenderingContext2D.prototype.roundRect) {
-            CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r) {
-                if (w < 2 * r) r = w / 2;
-                if (h < 2 * r) r = h / 2;
-                this.beginPath();
-                this.moveTo(x + r, y);
-                this.arcTo(x + w, y, x + w, y + h, r);
-                this.arcTo(x + w, y + h, x, y + h, r);
-                this.arcTo(x, y + h, x, y, r);
-                this.arcTo(x, y, x + w, y, r);
-                this.closePath();
-                return this;
-            };
+            ctx.fillText('Fair • Secure • Transparent • For All', 400, 955);
         }
 
         function downloadPoster() {
             const canvas = document.getElementById('posterCanvas');
             const link = document.createElement('a');
-            link.href = canvas.toDataURL('image/png');
-            link.download = 'voting-poster.png';
+            link.href = canvas.toDataURL('image/png', 1.0);
+            link.download = 'voting-poster-' + new Date().getTime() + '.png';
+            document.body.appendChild(link);
             link.click();
+            document.body.removeChild(link);
         }
 
-        // Draw poster when page loads
-        window.onload = drawPoster;
+        // Generate poster on page load
+        window.addEventListener('load', generatePoster);
     </script>
 </body>
 </html>
